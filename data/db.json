@@ -1,0 +1,131 @@
+{
+  "PJson": [
+    {
+      "name": "word/1",
+      "type": "omega",
+      "bool": false,
+      "colo": "uno",
+      "id": 1
+    }
+  ],
+  "config_all": [
+    {
+      "id": 1,
+      "name": "id",
+      "type": "number",
+      "defaultValue": "0"
+    },
+    {
+      "id": 2,
+      "name": "name",
+      "type": "string",
+      "defaultValue": ""
+    },
+    {
+      "id": 3,
+      "name": "type",
+      "type": "string",
+      "defaultValue": "alpha"
+    }
+  ],
+  "config_id": {
+    "tag": "input",
+    "type": "number",
+    "unique": true
+  },
+  "config_name": {
+    "tag": "input",
+    "type": "text",
+    "unique": true
+  },
+  "config_type": {
+    "tag": "select",
+    "child": [
+      {
+        "id": 1,
+        "tag": "option",
+        "value": "alpha"
+      }
+    ]
+  },
+  "config_id2": [
+    {
+      "id": 1,
+      "tag": "input",
+      "type": "number",
+      "unique": true,
+      "required": true,
+      "min": 1
+    }
+  ],
+  "config_name2": [
+    {
+      "id": 1,
+      "tag": "input",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "config_type2": [
+    {
+      "id": 1,
+      "tag": "select",
+      "options": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  ],
+  "config_bool2": [
+    {
+      "id": 1,
+      "tag": "input",
+      "type": "checkbox"
+    }
+  ],
+  "config_colo2": [
+    {
+      "id": 1,
+      "tag": "input",
+      "type": "radio",
+      "required": true,
+      "radios": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  ],
+  "config": [
+    {
+      "name": "inputText",
+      "tag": "input",
+      "type": "string",
+      "id": 1
+    },
+    {
+      "name": "inputNumber",
+      "tag": "input",
+      "type": "number",
+      "id": 2
+    },
+    {
+      "name": "inputCheckBox",
+      "tag": "input",
+      "type": "checkbox",
+      "id": 3
+    },
+    {
+      "name": "select",
+      "tag": "select",
+      "id": 4
+    },
+    {
+      "name": "inputRadio",
+      "tag": "input",
+      "type": "radio",
+      "id": 5
+    }
+  ]
+}
