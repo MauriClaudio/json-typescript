@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
-
+import jsonconfig from "../config.json"
 import { InputProva } from "./InputProva"
 
 const SERVER_ADDRES:string = "http://localhost:8000/" 
 
-type ConfigAll = { id: number; name: string; type: string; defaultValue: string; }
-
-type AllValue = {
+type Element = {
+    id: number;
     name: string;
-    value: string;
+    type: string;
+    defaultValue?: string;
+    unique?: boolean;
+    tag: string,
+    values?: string[];
+}
+
+type Config = {
+    mastertype: string;
+    elements: Element[];
 }
 
 function App () {
-    const [configAll, setConfigAll] = useState<ConfigAll[]>([])
+    const [config, setConfig] = useState<Config>({mastertype:"object", elements:[]})
     const handleGet = async() => {
-        const {data} = await axios.get(SERVER_ADDRES + "config_all")
-        setConfigAll(data)
-    }; useEffect(() => {handleGet()},[])
-
+        //const {data} = await axios.get(SERVER_ADDRES + "config_all")
+        setConfig(jsonconfig)
+    };
+    useEffect(() => {
+        handleGet()
+    },[])
 
     const handlePost = async() => {
         //manca la dinamicita
@@ -31,9 +41,9 @@ function App () {
     }
     
     const [isDisabled, setIsDisabled] = useState<boolean>(true)
-    function handleAbleSubmit () {
+    /*function handleAbleSubmit () {
         let i:boolean = false
-        configAll.some((item:ConfigAll) => {
+        config.elements.some((item:Element) => {
             if(document.getElementById("check_" + item.name)){
                 const element:any = document.getElementById("check_" + item.name)
                 if(!element.checked){
@@ -43,12 +53,18 @@ function App () {
         })
         setIsDisabled(i)
         console.log(isDisabled)
-    }
+    }*/
 
     return (<form onSubmit={handlePost}>
-        {configAll.map((item:ConfigAll) => 
-            <InputProva key={item.name} configAll={item} link={SERVER_ADDRES} onChange={handleAbleSubmit}/>
+        {config.mastertype === "object" && "{"}
+        {config.mastertype === "list" && "["}
+        <br/>
+        {config.elements.map((item:Element) => 
+            <InputProva key={item.name} element={item} onChange={() => {}} />
         )}
+        {config.mastertype === "object" && "}"}
+        {config.mastertype === "list" && "]"}
+        <br/>
         <input type="submit" disabled={isDisabled}/>
     </form>)
 }

@@ -2,11 +2,19 @@ import React, { createElement, useEffect, useState } from "react"
 import axios from "axios"
 import { PJson } from "../types/PJson";
 
-type ConfigAll = { id:number; name: string; type: string; defaultValue: string; }
+type Element = { 
+    id: number;
+    name: string;
+    type: string;
+    defaultValue?: string;
+    unique?: boolean;
+    tag: string,
+    values?: string[]; 
+}
 
 type props = { 
-    configAll: ConfigAll
-    link: string
+    element: Element
+    //link: string
     onChange: () => void
 }
 
@@ -21,19 +29,22 @@ type config = {
     }]
 }
 
-export const InputProva = ({configAll, link, onChange}:props) => {
-    const [config, setConfig] = useState<config>({tag:"div"})
-    const [pjson, setPjson] = useState<PJson[]>([])
-    const handleGetConfig = async() => {
+export const InputProva = ({element, onChange}:props) => {
+    //const [isValid, setIsValid] = useState<boolean>(element.unique ? true : false);
+    //const [config, setConfig] = useState<config>({tag:"div"})
+    //const [pjson, setPjson] = useState<PJson[]>([])
+    /*const handleGetConfig = async() => {
         const {data} = await axios.get(link + "config_" + configAll.name)
         setConfig(data)
-    }; useEffect(() => {handleGetConfig()},[])
-    const handleGetPjson = async() => {
+    };*/
+    //useEffect(() => {handleGetConfig()},[])
+    /*const handleGetPjson = async() => {
         const {data} = await axios.get(link + "PJson")
         setPjson(data)
-    }; useEffect(() => {handleGetPjson()},[])
+    };*/
+    //useEffect(() => {handleGetPjson()},[])
 
-    var [checked, setChecked] = useState<boolean>(false)
+    /*var [checked, setChecked] = useState<boolean>(false)
     function checkUnique (e:any) {
         setChecked(true)
         pjson.some((item:PJson) => {
@@ -46,9 +57,24 @@ export const InputProva = ({configAll, link, onChange}:props) => {
         })
         console.log(checked + configAll.name)
         onChange()
-    }
+    }*/
 
-    return createElement(
+    return( 
+    <>
+        {element.name}:
+        {element.tag === 'input' && <input title="ciao"/>}
+        {element.tag === 'select' &&
+            <select title="ciao2" name="cars" id="cars">
+                {element.values?.map((text: string) => <option value={text}>{text}</option>)}
+            </select>
+        }
+        <br/>
+    </>)
+    
+    
+    
+    
+    /*createElement(
         "div",
         {},
         configAll.name + " : ",
@@ -69,5 +95,5 @@ export const InputProva = ({configAll, link, onChange}:props) => {
                 checked: checked,
             },
         ) : null,
-    )
+    )*/
 }

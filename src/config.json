@@ -1,0 +1,32 @@
+{
+    "mastertype": "object",
+    "elements": [
+        {
+            "id": 1,
+            "name": "id",
+            "tag": "input",
+            "type": "number",
+            "defaultValue": "0",
+            "unique": true
+        },
+        {
+            "id": 2,
+            "name": "name",
+            "tag": "input",
+            "type": "text",
+            "defaultValue": "",
+            "unique": true
+        },
+        {
+            "id": 3,
+            "name": "type",
+            "tag": "select",
+            "type": "text",
+            "values": [
+                "alpha",
+                "beta",
+                "gamma"
+            ]
+        }
+    ]
+}
