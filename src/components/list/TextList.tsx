@@ -21,7 +21,12 @@ export const SimpleTextList = ({ configElement, setValue, id }: InputProps) => {
         if (json.find((item: JsonStructure) => item.id === e.currentTarget.name)) {
             const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.id !== e.currentTarget.name)
             setJson(newJson)
-            setValue({ name: configElement.name, elements: newJson, id: id })
+            if (newJson.length === 0) {
+                setValue({ name: configElement.name, id: id })
+            }
+            else  {
+                setValue({ name: configElement.name, elements: newJson, id: id })                
+            }
         }
     }
 

@@ -8,14 +8,22 @@ import { JsonStructure } from "./types/ConfigAll"
 
 function App() {
 
-    const [json, setJson] = useState<JsonStructure[]>([])
+    const [json, setJson] = useState<JsonStructure>()
 
     const setValue = (js: JsonStructure) => {
         console.log("to APP : ", js)
-        const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.name !== js.name)
-        newJson.push(js)
-        setJson(newJson)
-        console.log("NEW APP :", newJson)
+        if (js.elements || js.value || js.values) {
+            setJson(js)
+            console.log("NEW APP :", js)
+        }
+        else {
+            setJson(undefined)
+            console.log("NEW APP :", undefined)
+        }
+    }
+
+    const handleSubmit = () => {
+        console.log("SUBMIT :", json)
     }
 
     return (
@@ -42,7 +50,9 @@ function App() {
                 />
             }
             <br /><br />
-            <input type="submit" onClick={e => console.log("SUBMIT :", json)} />
+            <input type="submit" onClick={e =>
+                handleSubmit()
+            } />
         </>
     )
 }

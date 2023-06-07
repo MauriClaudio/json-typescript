@@ -12,6 +12,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
     }
 
     const [array, setArray] = useState<number[]>(baseArray)
+    const [json, setJson] = useState<JsonStructure[]>([])
 
     const handleAdd = () => {
         let n: number[] = array.slice()
@@ -20,37 +21,44 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
         setArray(n)
         console.log("ADD :", n)
     }
+
     const handleRemove = (e: any) => {
-        const newArray: number[] = array.filter((item: number) => item !== parseInt(e.currentTarget.name))
+        let name: string = e.currentTarget.name
+        const newArray: number[] = array.filter((item: number) => item !== parseInt(name))
         setArray(newArray)
         console.log("DEL :", newArray)
+        if (id !== undefined)
+            name = id + "_" + name
 
-        if (json.find((item: JsonStructure) => item.id === e.currentTarget.name)) {
-            const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.id !== e.currentTarget.name)
+        if (json.find((item: JsonStructure) => item.id === name)) {
+            const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.id !== name)
             setJson(newJson)
-            setValue({ name: configElement.name, elements: newJson, id: id })
+            if (newJson.length === 0) {
+                setValue({ name: configElement.name })
+            }
+            else {
+                setValue({ name: configElement.name, elements: newJson, id: id })
+            }
         }
     }
 
-    const [json, setJson] = useState<JsonStructure[]>([])
-
     const setThisValue = (js: JsonStructure) => {
         console.log("to " + configElement.name + " : ", js)
-        let newJson: JsonStructure[] = []
-        if (json.find((item: JsonStructure) => item.id === js.id && item.name === js.name)) {
-            newJson = json.map((item: JsonStructure) => {
-                if (item.id === js.id && item.name === js.name) {
-                    return js
-                }
-                return item
-            })
+        let newJson: JsonStructure[] = json.slice()
+        const index: number = newJson.findIndex((item: JsonStructure) => item.id === js.id && item.name === js.name)
+        if (index !== -1) {
+            newJson.splice(index, 1)
         }
-        else {
-            newJson = json.slice()
+        if (js.elements || js.value || js.values) {
             newJson.push(js)
         }
         setJson(newJson)
-        setValue({ name: configElement.name, elements: newJson, id: id })
+        if (newJson.length === 0) {
+            setValue({ name: configElement.name, id: id})
+        }
+        else {
+            setValue({ name: configElement.name, elements: newJson, id: id })
+        }
     }
 
     return (
@@ -62,11 +70,11 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
                         <div style={{ paddingLeft: "24px" }} key={item + element.name}>
                             {element.type === "list" ?
                                 element.elements ?
-                                    <ComplexList configElement={element} setValue={setThisValue} id={id === undefined ? item+"" : id+"_"+item} />
+                                    <ComplexList configElement={element} setValue={setThisValue} id={id === undefined ? item + "" : id + "_" + item} />
                                     :
-                                    <SimpleList configElement={element} setValue={setThisValue} id={id === undefined ? item+"" : id+"_"+item} />
+                                    <SimpleList configElement={element} setValue={setThisValue} id={id === undefined ? item + "" : id + "_" + item} />
                                 :
-                                <Object configElement={element} setValue={setThisValue} id={id === undefined ? item+"" : id+"_"+item} />
+                                <Object configElement={element} setValue={setThisValue} id={id === undefined ? item + "" : id + "_" + item} />
                             }
                         </div>
                     )}

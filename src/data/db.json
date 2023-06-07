@@ -8,7 +8,7 @@
         {
           "name": "CL_1",
           "type": "list",
-          "elements":[
+          "elements": [
             {
               "name": "SL_Radio",
               "type": "list",
@@ -42,7 +42,7 @@
           "name": "SL_Check Box",
           "type": "list",
           "maxChoose": 2,
-          "values" : [
+          "values": [
             "value1",
             "value2",
             "value3"
@@ -51,7 +51,7 @@
         {
           "name": "SL_Select",
           "type": "list",
-          "values" : [
+          "values": [
             "value1",
             "value2",
             "value3",
@@ -62,82 +62,8 @@
         {
           "name": "SL_Text",
           "type": "list",
-          "datatype": "text", 
+          "datatype": "text",
           "maxChoose": 5
-        }
-      ]
-    }
-  ],
-  "olds-elements": [
-    {
-      "name": "complexList1",
-      "type": "list",
-      "minListElements": 1,
-      "elements": [
-        {
-          "name": "complexList2",
-          "type": "list",
-          "elements": [
-            {
-              "name": "simpleList3",
-              "type": "list",
-              "maxChoose": 2,
-              "values": [
-                "value1",
-                "value2",
-                "value3"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "object1",
-          "type": "object",
-          "elements": [
-            {
-              "name": "complexList3",
-              "type": "list",
-              "elements": [
-                {
-                  "name": "simpleList4",
-                  "type": "list",
-                  "datatype": "text"
-                }
-              ]
-            },
-            {
-              "name": "object2",
-              "type": "object",
-              "elements": [
-                {
-                  "name": "string",
-                  "type": "string"
-                }
-              ]
-            },
-            {
-              "name": "simpleList2",
-              "type": "list",
-              "maxChoose": 1,
-              "values": [
-                "value1",
-                "value2",
-                "value3",
-                "value4",
-                "value5"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "simpleList1",
-          "type": "list",
-          "maxChoose": 1,
-          "values": [
-            "value1",
-            "value2",
-            "value3"
-          ]
         }
       ]
     }

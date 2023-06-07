@@ -15,7 +15,13 @@ export const SimpleCheckBoxLIst = ({ configElement, setValue, id }: InputProps) 
         }
         console.log("check", newCheck)
         setArrayCheck(newCheck)
-        setValue({ name: configElement.name, values: newCheck, id: id})
+        
+        if (newCheck.length === 0) {
+            setValue({ name: configElement.name, id: id })
+        }
+        else  {
+            setValue({ name: configElement.name, values: newCheck, id: id })                
+        }
     }
 
     return (

@@ -13,10 +13,18 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
 
     const setThisValue = (js: JsonStructure) => {
         console.log("to " + configElement.name + " : ", js)
+
         const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.name !== js.name)
-        newJson.push(js)
+        if (js.elements || js.value || js.values) {
+            newJson.push(js)
+        }
         setJson(newJson)
-        setValue({ name: configElement.name, elements: newJson, id: id })
+        if (newJson.length === 0) {
+            setValue({ name: configElement.name, id: id})
+        }
+        else {
+            setValue({ name: configElement.name, elements: newJson, id: id })
+        }
     }
 
     return (
