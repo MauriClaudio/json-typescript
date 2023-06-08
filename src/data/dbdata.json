@@ -1,0 +1,81 @@
+{
+  "dbdata": {
+    "name": "dbjson",
+    "elements": [
+      {
+        "name": "OBJ_1",
+        "elements": [
+          {
+            "name": "SL_Check Box",
+            "values": [
+              "value3"
+            ],
+            "id": "2"
+          },
+          {
+            "name": "OBJ_2",
+            "elements": [
+              {
+                "name": "Input Number",
+                "value": "666786567"
+              },
+              {
+                "name": "Input Text",
+                "value": "dfghjk"
+              },
+              {
+                "name": "Input Boolean",
+                "value": "false"
+              }
+            ],
+            "id": "2"
+          },
+          {
+            "name": "SL_Select",
+            "value": "value4",
+            "id": "2"
+          },
+          {
+            "name": "SL_Text",
+            "values": [
+              "hiofoixjgagrlòji",
+              "fjlgjlgsdnbklshoòp",
+              "nvfjdsbnkg kfjbn nklsea"
+            ],
+            "id": "2"
+          },
+          {
+            "name": "CL_1",
+            "elements": [
+              {
+                "name": "SL_Radio",
+                "value": "value1",
+                "id": "2_1"
+              },
+              {
+                "name": "SL_Radio",
+                "value": "value3",
+                "id": "2_3"
+              }
+            ],
+            "id": "2"
+          }
+        ],
+        "id": "2"
+      },
+      {
+        "name": "OBJ_1",
+        "elements": [
+          {
+            "name": "SL_Check Box",
+            "values": [
+              "value1"
+            ],
+            "id": "0"
+          }
+        ],
+        "id": "0"
+      }
+    ]
+  }
+}

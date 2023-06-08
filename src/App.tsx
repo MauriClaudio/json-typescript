@@ -5,6 +5,7 @@ import { ComplexList } from "./components/list/ComplexList"
 import { SimpleList } from "./components/list/SimpleList"
 import { Object } from "./components/Object"
 import { JsonStructure } from "./types/ConfigAll"
+import axios from "axios"
 
 function App() {
 
@@ -22,8 +23,9 @@ function App() {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log("SUBMIT :", json)
+        await axios.post("http://localhost:8000/dbdata ", json)
     }
 
     return (
