@@ -1,7 +1,7 @@
 import { InputProps, JsonStructure } from "../../types/ConfigAll"
 import { SimpleRadioList } from "./RadioList"
 import { SimpleSelectList } from "./SelectList"
-import { SimpleTextList } from "./TextList"
+import { SimpleInputList } from "./InputList"
 import { SimpleCheckBoxLIst } from "./CheckBoxList"
 
 export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
@@ -23,7 +23,7 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
                         :
                         <SimpleSelectList configElement={configElement} setValue={setThisValue} id={id}/>
                 :
-                <SimpleTextList configElement={configElement} setValue={setThisValue} id={id}/>
+                <SimpleInputList configElement={configElement} setValue={setThisValue} id={id}/>
             }
             {"]"}
         </>

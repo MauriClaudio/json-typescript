@@ -6,25 +6,29 @@ import { SimpleList } from "./list/SimpleList"
 import { InputBoolean } from "./input/InputBoolean"
 import { InputNumber } from "./input/InputNumber"
 import { InputString } from "./input/InputString"
+import { Conditioner } from "./Conditioner"
 
 export const Object = ({ configElement, setValue, id }: InputProps) => {
 
-    const [json, setJson] = useState<JsonStructure[]>([])
+    const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
+    //const [storedValidity, setStoredValidity] = useState<boolean>()
 
     const setThisValue = (js: JsonStructure) => {
-        console.log("to " + configElement.name + " : ", js)
 
-        const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.name !== js.name)
+        const newJsonElements: JsonStructure[] = jsonElements.filter((item: JsonStructure) => item.name !== js.name)
         if (js.elements || js.value || js.values) {
-            newJson.push(js)
+            newJsonElements.push(js)
         }
-        setJson(newJson)
-        if (newJson.length === 0) {
-            setValue({ name: configElement.name, id: id})
+        setJsonElements(newJsonElements)
+
+        if (newJsonElements.length === 0) {
+            setValue({ name: configElement.name, id: id })
         }
         else {
-            setValue({ name: configElement.name, elements: newJson, id: id })
+            setValue({ name: configElement.name, elements: newJsonElements, id: id })
         }
+        //
+        console.log("to " + configElement.name + " : ", js)
     }
 
     return (
@@ -46,11 +50,15 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
                                 item.type === "string" ? <InputString configElement={item} setValue={setThisValue} /> :
                                     item.type === "number" ? <InputNumber configElement={item} setValue={setThisValue} /> :
                                         item.type === "boolean" ? <InputBoolean configElement={item} setValue={setThisValue} /> :
-                                            <>{"Type not found"}</>
+                                            item.type === "conditionList" ? <Conditioner configElement={item} setValue={setThisValue} /> :
+                                                <>{"Type not found"}</>
                     }
                 </div>
             )}
             {"}"}
+            {
+                //storedValidity ? "Valido" : "Non Valido"
+            }
         </>
     )
 }

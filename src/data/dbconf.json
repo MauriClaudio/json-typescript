@@ -1,0 +1,138 @@
+{
+  "mastertype": "list",
+  "elements": [
+    {
+      "name": "OBJ_1",
+      "type": "object",
+      "elements": [
+        {
+          "name": "CL_1",
+          "type": "list",
+          "elements": [
+            {
+              "name": "SL_Radio",
+              "type": "list",
+              "required": true,
+              "values": [
+                "value1",
+                "value2",
+                "value3"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "OBJ_2",
+          "type": "object",
+          "elements": [
+            {
+              "name": "Input Boolean",
+              "type": "boolean",
+              "required": true
+            },
+            {
+              "name": "Input Number",
+              "type": "number",
+              "properties": {
+                "onlyPosotive": true,
+                "maxLength": 12,
+                "minLength": 3
+              }
+            },
+            {
+              "name": "Input Text",
+              "type": "string",
+              "required": true,
+              "properties": {
+                "password": true,
+                "minLength": 5,
+                "maxLength": 26,
+                "needLowerCase": true,
+                "needUpperCase": true,
+                "needNumbers": true,
+                "needLetters": true,
+                "needSpecialCharacters": true
+              }
+            }
+          ]
+        },
+        {
+          "name": "SL_Check Box",
+          "type": "list",
+          "maxChoose": 2,
+          "minChoose": 2,
+          "required": true,
+          "values": [
+            "value1",
+            "value2",
+            "value3"
+          ]
+        },
+        {
+          "name": "CondList_3",
+          "type": "conditionList",
+          "elements": [
+            {
+              "name": "SL_Select_R1",
+              "type": "list",
+              "values": [
+                "value1",
+                "value2",
+                "value3",
+                "value4",
+                "value5"
+              ]
+            },
+            {
+              "name": "CondList_3",
+              "type": "list",
+              "rurel": "SL_Select_R1",
+              "states": [
+                {
+                  "groupId": 1,
+                  "default": true,
+                  "condition": "value1",
+                  "values": [
+                    "uno",
+                    "one"
+                  ]
+                },
+                {
+                  "groupId": 2,
+                  "condition": "value2",
+                  "values": [
+                    "due",
+                    "two"
+                  ]
+                },
+                {
+                  "groupId": 3,
+                  "condition": "value3",
+                  "values": [
+                    "tre",
+                    "three"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "SL_Input",
+          "type": "list",
+          "datatype": "text",
+          "maxChoose": 5,
+          "minChoose": 2,
+          "required": true,
+          "properties": {
+            "minLength": 3,
+            "maxLength": 12,
+            "onlyLowerCase": true,
+            "banNumbers": true,
+            "banSpecialCharacters": true
+          }
+        }
+      ]
+    }
+  ]
+}

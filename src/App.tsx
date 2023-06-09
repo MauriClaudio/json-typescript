@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import dbjson from "./data/db.json"
+import dbjson from "./data/dbconf.json"
 import { ComplexList } from "./components/list/ComplexList"
 import { SimpleList } from "./components/list/SimpleList"
 import { Object } from "./components/Object"
