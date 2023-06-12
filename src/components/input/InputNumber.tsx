@@ -16,7 +16,7 @@ export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
         }
         else if (configElement.properties) {
             if (configElement.properties) {
-                if (configElement.properties?.onlyPosotive) {
+                if (configElement.properties?.onlyPositive) {
                     if (parseInt(value) < 0) {
                         currentValidity = false
                     }

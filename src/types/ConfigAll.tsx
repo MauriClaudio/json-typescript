@@ -52,7 +52,7 @@ export type Properties = {
     needNumbers?: boolean
     needSpecialCharacters?: boolean
     onlyLowerCase?: boolean
-    onlyPosotive?: boolean
+    onlyPositive?: boolean
     onlyUpperCase?: boolean
     password?: boolean
     //required?: boolean
@@ -116,7 +116,7 @@ export type ConfigElement_ = {
         onlyLetters?: boolean
         onlyNumbers?: boolean
         onlyLowercase?: boolean
-        onlyPosotive?: boolean
+        onlyPositive?: boolean
         onlyUpperCase?: boolean
         password?: boolean
         required?: boolean

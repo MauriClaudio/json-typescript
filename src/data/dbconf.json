@@ -34,7 +34,7 @@
               "name": "Input Number",
               "type": "number",
               "properties": {
-                "onlyPosotive": true,
+                "onlyPositive": true,
                 "maxLength": 12,
                 "minLength": 3
               }
