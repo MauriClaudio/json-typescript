@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { InputProps, JsonStructure } from "../../types/ConfigAll"
+import { InputProps, JsonStructure, Validity } from "../../types/ConfigAll"
 import { InputString } from "../input/InputString"
 import { InputNumber } from "../input/InputNumber"
 
@@ -9,6 +9,7 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
     const [idList, setIdList] = useState<number[]>([])
 
+    const [storedValidity, setStoredValidity] = useState<Validity[]>([])
 
     function handleAdd() {
         let newIdList: number[] = idList.slice()
@@ -23,35 +24,47 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
 
     function handleRemove(e: any) {
         const targetId: string = e.currentTarget.name
-        let newIdList: number[] = idList.filter((filterId: number) => filterId !== parseInt(targetId))
+        const newIdList: number[] = idList.filter((filterId: number) => filterId !== parseInt(targetId))
         setIdList(newIdList)
         //
         console.log("DEL :", newIdList)
 
         if (jsonElements.find((element: JsonStructure) => element.id === targetId)) {
-            let newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== targetId)
-            setJsonElements(newJsonElements)
+            const newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== targetId)
 
+            let newJs: JsonStructure
             if (newJsonElements.length === 0) {
-                setValue({ name: configElement.name, id: id })
+                newJs = { name: configElement.name, id: id }
             }
             else {
                 const jsonValues: string[] = newJsonElements.map((element: JsonStructure) => { return element.value! })
-                setValue({ name: configElement.name, values: jsonValues, id: id })
-                //handleValidity(jsonValues, e.currentTarget.name)
+                newJs = { name: configElement.name, values: jsonValues, id: id }
             }
+
+            const newValidity: Validity[] = storedValidity.filter((item: Validity) => item.name !== targetId)
+            setValue(newJs, newValidity.find((item: Validity) => item.validity === false) ? false : true)
+
+            setStoredValidity(newValidity)
+            setJsonElements(newJsonElements)
         }
     }
 
 
-    function setThisValue (js: JsonStructure) {
-        let newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== js.id)
+    function setThisValue(js: JsonStructure, validity?: boolean) {
+        const newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== js.id)
         newJsonElements.push(js)
+
+        const newValidity: Validity[] = storedValidity.filter((item: Validity) => item.name !== "" + js.id)
+        newValidity.push({ name: "" + js.id, validity: validity })
+
+        setStoredValidity(newValidity)
         setJsonElements(newJsonElements)
 
         const jsonValues: string[] = newJsonElements.map((item: JsonStructure) => { return item.value! })
-        setValue({ name: configElement.name, values: jsonValues, id: id })
-        //handleValidity(values, js.id!)
+        setValue(
+            { name: configElement.name, values: jsonValues, id: id },
+            newValidity.find((item: Validity) => item.validity === false) ? false : true
+        )
     }
 
 
@@ -100,9 +113,8 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
                 }
             >ADD</button>
             {idList.length !== 0 ? <br /> : null}
-            {
-                //storedValidity ? "Valido" : "Non Valido"
-            }
+            {!storedValidity.find((item: Validity) => item.validity === false) ?
+                <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
         </>
     )
 }

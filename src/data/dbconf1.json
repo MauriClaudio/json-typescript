@@ -1,0 +1,101 @@
+{
+    "mastertype": "list",
+    "minListElements": 1,
+    "elements": [
+        {
+            "name": "OBJ_1",
+            "type": "object",
+            "elements": [
+                {
+                    "name": "CL_1",
+                    "type": "list",
+                    "elements": [
+                        {
+                            "name": "SL_Radio",
+                            "type": "list",
+                            "required": true,
+                            "values": [
+                                "value1",
+                                "value2",
+                                "value3"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "OBJ_2",
+                    "type": "object",
+                    "elements": [
+                        {
+                            "name": "Input Boolean",
+                            "type": "boolean",
+                            "required": true
+                        },
+                        {
+                            "name": "Input Number",
+                            "type": "number",
+                            "properties": {
+                                "onlyPositive": true,
+                                "maxLength": 12,
+                                "minLength": 3
+                            }
+                        },
+                        {
+                            "name": "Input Text",
+                            "type": "string",
+                            "required": true,
+                            "properties": {
+                                "password": true,
+                                "minLength": 5,
+                                "maxLength": 26,
+                                "needLowerCase": true,
+                                "needUpperCase": true,
+                                "needNumbers": true,
+                                "needLetters": true,
+                                "needSpecialCharacters": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "SL_Check Box",
+                    "type": "list",
+                    "maxChoose": 2,
+                    "minChoose": 2,
+                    "required": true,
+                    "values": [
+                        "value1",
+                        "value2",
+                        "value3"
+                    ]
+                },
+                {
+                    "name": "SL_Select",
+                    "type": "list",
+                    "values": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4",
+                        "value5"
+                    ]
+                },
+                {
+                    "name": "SL_Input",
+                    "type": "list",
+                    "datatype": "text",
+                    "maxChoose": 5,
+                    "minChoose": 2,
+                    "required": true,
+                    "properties": {
+                        "minLength": 3,
+                        "maxLength": 12,
+                        "onlyLowerCase": true,
+                        "banNumbers": true,
+                        "banSpecialCharacters": true
+                    }
+                }
+            ]
+        }
+    ]
+}

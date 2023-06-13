@@ -6,9 +6,9 @@ import { SimpleCheckBoxLIst } from "./CheckBoxList"
 
 export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
 
-    const setThisValue = (js: JsonStructure) => {
+    const setThisValue = (js: JsonStructure, validity?: boolean) => {
         //console.log(configElement.name + " = ", js)
-        setValue(js)
+        setValue(js, validity)
     }
 
     return (

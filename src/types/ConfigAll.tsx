@@ -1,3 +1,8 @@
+export type Validity = {
+    name: string
+    validity?: boolean
+}
+
 export type InputProps = {
     configElement: ConfigElement
     setValue: (js: JsonStructure, validity?: boolean) => void
@@ -52,7 +57,7 @@ export type Properties = {
     needNumbers?: boolean
     needSpecialCharacters?: boolean
     onlyLowerCase?: boolean
-    onlyPosotive?: boolean
+    onlyPositive?: boolean
     onlyUpperCase?: boolean
     password?: boolean
     //required?: boolean

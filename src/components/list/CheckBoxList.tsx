@@ -9,7 +9,8 @@ export const SimpleCheckBoxLIst = ({ configElement, setValue, id }: InputProps) 
         !
         (configElement.required
             ||
-            (configElement.minChoose ? configElement.minChoose > 0 : false)))
+            (configElement.minChoose ? configElement.minChoose > 0 : false))
+    )
 
     const handleOnChange = (name: string, check: boolean) => {
         let newCheck: string[] = arrayCheck.slice()
@@ -22,25 +23,25 @@ export const SimpleCheckBoxLIst = ({ configElement, setValue, id }: InputProps) 
         console.log("check", newCheck)
         setArrayCheck(newCheck)
 
-        if (newCheck.length === 0) {
-            setValue({ name: configElement.name, id: id })
-        }
-        else {
-            setValue({ name: configElement.name, values: newCheck, id: id })
-        }
-
-        let currentValidty:boolean = true
+        let currentValidty: boolean = true
         if (configElement.minChoose) {
-            if (newCheck.length < configElement.minChoose ) {
+            if (newCheck.length < configElement.minChoose) {
                 currentValidty = false
             }
         }
         if (configElement.required) {
-            if (newCheck.length < 1 ) {
+            if (newCheck.length < 1) {
                 currentValidty = false
             }
         }
         setStoredValidity(currentValidty)
+
+        if (newCheck.length === 0) {
+            setValue({ name: configElement.name, id: id })
+        }
+        else {
+            setValue({ name: configElement.name, values: newCheck, id: id }, currentValidty)
+        }
     }
 
     return (
@@ -61,7 +62,7 @@ export const SimpleCheckBoxLIst = ({ configElement, setValue, id }: InputProps) 
                     {value}
                 </div>
             )}
-            {storedValidity ? "Valido" : "Non Valido"}
+            {storedValidity ? <div style={{color:"#006600"}}>Valido</div> : <div style={{color:"#cc0000"}}>Non Valido</div>}
         </>
     )
 }

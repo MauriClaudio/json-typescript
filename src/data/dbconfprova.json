@@ -1,5 +1,6 @@
 {
   "mastertype": "list",
+  "minListElements": 1,
   "elements": [
     {
       "name": "OBJ_1",
@@ -34,7 +35,7 @@
               "name": "Input Number",
               "type": "number",
               "properties": {
-                "onlyPosotive": true,
+                "onlyPositive": true,
                 "maxLength": 12,
                 "minLength": 3
               }
@@ -42,7 +43,6 @@
             {
               "name": "Input Text",
               "type": "string",
-              "required": true,
               "properties": {
                 "password": true,
                 "minLength": 5,
@@ -87,6 +87,7 @@
               "name": "CondList_3",
               "type": "list",
               "rurel": "SL_Select_R1",
+              "required": true,
               "states": [
                 {
                   "groupId": 1,

@@ -1,56 +1,46 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { InputProps } from "../../types/ConfigAll"
 
 export const InputString = ({ configElement, setValue, id }: InputProps) => {
 
     const [storedValidity, setStoredValidity] = useState<boolean>(!configElement.required)
 
+    //useEffect(()=>{setValue({name:configElement.name}, storedValidity)},[])
+
     const handleOnChange = (e: any) => {
         let value: string = e.currentTarget.value
-
-        if (configElement.properties?.onlyLowerCase) {
-            value = value.toLowerCase()
-        }
-        if (configElement.properties?.onlyUpperCase) {
-            value = value.toUpperCase()
-        }
 
         let currentValidity: boolean = true
 
         if (configElement.required && value === "") {
             currentValidity = false
         }
-        if (configElement.properties) {
-            if (configElement.properties?.minLength && value.length < configElement.properties.minLength) {
-                currentValidity = false
+        else if (!configElement.required && value === "") {
+            currentValidity = true
+        }
+        else if (configElement.properties) {
+            
+            if (configElement.properties?.onlyLowerCase) {
+                value = value.toLowerCase()
             }
-            if (configElement.properties?.needUpperCase && !/[A-Z]/g.test(value)) {
-                currentValidity = false
+            else if (configElement.properties?.onlyUpperCase) {
+                value = value.toUpperCase()
             }
-            if (configElement.properties?.needLowerCase && !/[a-z]/g.test(value)) {
-                currentValidity = false
-            }
-            if (configElement.properties?.banLetters && /[a-zA-Z]/g.test(value)) {
-                currentValidity = false
-            }
-            if (configElement.properties?.needLetters && !/[a-zA-Z]/g.test(value)) {
-                currentValidity = false
-            }
-            if (configElement.properties?.banNumbers && /\d+/g.test(value)) {
-                currentValidity = false
-            }
-            if (configElement.properties?.needNumbers && !/\d+/g.test(value)) {
-                currentValidity = false
-            }
-            if (configElement.properties?.banSpecialCharacters && /[!@#$%^&*(),._?":{}|<>=]/g.test(value)) {
-                currentValidity = false
-            }
-            if (configElement.properties?.needSpecialCharacters && !/[!@#$%^&*(),._?":{}|<>=]/g.test(value)) {
+            
+            if (
+                (configElement.properties?.minLength && value.length < configElement.properties.minLength)
+                || (configElement.properties?.needUpperCase && !/[A-Z]/g.test(value))
+                || (configElement.properties?.needLowerCase && !/[a-z]/g.test(value))
+                || (configElement.properties?.banLetters && /[a-zA-Z]/g.test(value))
+                || (configElement.properties?.needLetters && !/[a-zA-Z]/g.test(value))
+                || (configElement.properties?.banNumbers && /\d+/g.test(value))
+                || (configElement.properties?.needNumbers && !/\d+/g.test(value))
+                || (configElement.properties?.banSpecialCharacters && /[!@#$%^&*(),._?":{}|<>=]/g.test(value))
+                || (configElement.properties?.needSpecialCharacters && !/[!@#$%^&*(),._?":{}|<>=]/g.test(value))
+            ) {
                 currentValidity = false
             }
         }
-
-        setStoredValidity(currentValidity)
 
         console.log("input : ", {
             name: configElement.name,
@@ -63,12 +53,13 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
             value: value,
             id: id
         }, currentValidity)
+        setStoredValidity(currentValidity)
     }
-
 
     return (
         <>
-            {configElement.name === "" ? null : configElement.name + " : "} <input
+            {configElement.name === "" ? null : configElement.name + " : "}
+            <input
                 type={configElement.properties?.password ? "password" : "text"}
                 maxLength={configElement.properties?.maxLength}
                 onChange={handleOnChange}
@@ -78,7 +69,8 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
                     else if (configElement.properties?.onlyLowerCase)
                         e.currentTarget.value = e.currentTarget.value.toLowerCase()
                 }}
-            />{storedValidity ? "Valido" : "Non Valido"}
+            />
+            {storedValidity ? <div style={{color:"#006600"}}>Valido</div> : <div style={{color:"#cc0000"}}>Non Valido</div>}
         </>
     )
 }

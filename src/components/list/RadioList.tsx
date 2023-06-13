@@ -25,7 +25,7 @@ export const SimpleRadioList = ({ configElement, setValue, id}: InputProps) => {
                     {value}
                 </div>
             )}
-            {storedValidity ? "Valido" : "Non Valido"}
+            {storedValidity ? <div style={{color:"#006600"}}>Valido</div> : <div style={{color:"#cc0000"}}>Non Valido</div>}
         </>
     )
 }

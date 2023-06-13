@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ConfigElement, InputProps, JsonStructure } from "../../types/ConfigAll"
+import { ConfigElement, InputProps, JsonStructure, Validity } from "../../types/ConfigAll"
 import { Object } from "../Object"
 import { SimpleList } from "./SimpleList"
 
@@ -11,60 +11,86 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
         n++
     }
 
-    const [array, setArray] = useState<number[]>(baseArray)
-    const [json, setJson] = useState<JsonStructure[]>([])
+    const [idList, setIdList] = useState<number[]>(baseArray)
+    const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
+    const [storedValidity, setStoredValidity] = useState<Validity[]>([])
 
     const handleAdd = () => {
-        let n: number[] = array.slice()
-        let lenght: number = array.length ? n[array.length - 1] : 0
-        n.push(lenght + 1)
-        setArray(n)
-        console.log("ADD :", n)
+        let newIdList: number[] = idList.slice()
+        const idCount: number = idList.length ? newIdList[idList.length - 1] : 0
+        const newId: number = idCount + 1
+        newIdList.push(newId)
+        setIdList(newIdList)
+        //
+        console.log("ADD :", newIdList)
     }
 
     const handleRemove = (e: any) => {
-        let name: string = e.currentTarget.name
-        const newArray: number[] = array.filter((item: number) => item !== parseInt(name))
-        setArray(newArray)
-        console.log("DEL :", newArray)
-        if (id !== undefined)
-            name = id + "_" + name
+        let targetId: string = e.currentTarget.name
+        const newIdList: number[] = idList.filter((filterId: number) => filterId !== parseInt(targetId))
+        setIdList(newIdList)
+        //
+        console.log("DEL :", newIdList)
 
-        if (json.find((item: JsonStructure) => item.id === name)) {
-            const newJson: JsonStructure[] = json.filter((item: JsonStructure) => item.id !== name)
-            setJson(newJson)
-            if (newJson.length === 0) {
-                setValue({ name: configElement.name })
+        if (id !== undefined) {
+            targetId = id + "_" + targetId
+        }
+
+        if (jsonElements.find((element: JsonStructure) => element.id === targetId)) {
+            const newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== targetId)
+
+            let newJs: JsonStructure
+            if (newJsonElements.length === 0) {
+                newJs = { name: configElement.name, id: id }
             }
             else {
-                setValue({ name: configElement.name, elements: newJson, id: id })
+                newJs = { name: configElement.name, elements: newJsonElements, id: id }
             }
+
+            const newValidity: Validity[] = storedValidity.filter((item: Validity) => item.name !== targetId)
+            console.log("dfghj", newValidity)
+            setValue(newJs, newValidity.find((item: Validity) => item.validity === false) ? false : true)
+
+            setStoredValidity(newValidity)
+            setJsonElements(newJsonElements)
         }
     }
 
-    const setThisValue = (js: JsonStructure) => {
-        console.log("to " + configElement.name + " : ", js)
-        let newJson: JsonStructure[] = json.slice()
-        const index: number = newJson.findIndex((item: JsonStructure) => item.id === js.id && item.name === js.name)
+    const setThisValue = (js: JsonStructure, validity?: boolean) => {
+        const newJsonElements: JsonStructure[] = jsonElements.slice()
+        const index: number = newJsonElements.findIndex((item: JsonStructure) => item.id === js.id && item.name === js.name)
         if (index !== -1) {
-            newJson.splice(index, 1)
+            newJsonElements.splice(index, 1)
         }
         if (js.elements || js.value || js.values) {
-            newJson.push(js)
+            newJsonElements.push(js)
         }
-        setJson(newJson)
-        if (newJson.length === 0) {
-            setValue({ name: configElement.name, id: id})
+
+        let newJs: JsonStructure
+        if (newJsonElements.length === 0) {
+            newJs = { name: configElement.name, id: id }
         }
         else {
-            setValue({ name: configElement.name, elements: newJson, id: id })
+            newJs = { name: configElement.name, elements: newJsonElements, id: id }
         }
+
+        const newValidity: Validity[] = storedValidity.filter((item: Validity) => item.name !== "" + js.id)
+        newValidity.push({ name: "" + js.id, validity: validity })
+
+        setValue(newJs, newValidity.find((item: Validity) => item.validity === false) ? false : true)
+
+        setStoredValidity(newValidity)
+        setJsonElements(newJsonElements)
+
+        //console.log("to " + configElement.name + " : ", js)
     }
 
     return (
         <>
             {configElement.name + " : ["}
-            {array?.map((item: number) =>
+            {!storedValidity.find((item: Validity) => item.validity === false) ?
+                <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
+            {idList?.map((item: number) =>
                 <div key={item}>
                     {configElement.elements?.map((element: ConfigElement) =>
                         <div style={{ paddingLeft: "24px" }} key={item + element.name}>
@@ -88,7 +114,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
                 </div>
             )}
             <button onClick={handleAdd}>ADD</button>
-            {array.length !== 0 ? <br /> : null}
+            {idList.length !== 0 ? <br /> : null}
             {"]"}
         </>
     )
