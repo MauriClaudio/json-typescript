@@ -121,7 +121,7 @@ export type ConfigElement_ = {
         onlyLetters?: boolean
         onlyNumbers?: boolean
         onlyLowercase?: boolean
-        onlyPosotive?: boolean
+        onlyPositive?: boolean
         onlyUpperCase?: boolean
         password?: boolean
         required?: boolean
