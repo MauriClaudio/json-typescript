@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ConfigElement, InputProps, JsonStructure, Validity } from "../../types/ConfigAll"
 import { Object } from "../Object"
 import { SimpleList } from "./SimpleList"
 
 export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
+
     let n: number = 0
     let baseArray: number[] = []
     while (n < configElement.minListElements!) {
@@ -14,6 +15,23 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
     const [idList, setIdList] = useState<number[]>(baseArray)
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
     const [storedValidity, setStoredValidity] = useState<Validity[]>([])
+
+    useEffect(() => {
+        //const initialValidity: Validity[] = [{name: "0", validity: false}]
+
+        let nji :number = -1
+        const initialValidity: Validity[] = configElement.elements?.map((item: ConfigElement) => {
+            nji++
+            //console.log("dddffd", item.name + false + nji)
+            return {
+                name: nji + "",
+                validity: document.getElementById("objfalse0") !== null ? false : true
+            }
+        })!
+        setStoredValidity(initialValidity)
+        //
+        console.log("initial validity", initialValidity)
+    }, [])
 
     const handleAdd = () => {
         let newIdList: number[] = idList.slice()

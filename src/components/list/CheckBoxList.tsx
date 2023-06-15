@@ -48,7 +48,9 @@ export const SimpleCheckBoxLIst = ({ configElement, setValue, id }: InputProps) 
         <>
             {configElement.values?.map((value: string) =>
                 <div key={value}>
-                    <input type="checkbox"
+                    <input
+                        id={configElement.name + storedValidity + id}
+                        type="checkbox"
                         onChange={e => handleOnChange(value, e.currentTarget.checked)}
                         disabled={
                             arrayCheck.length >= configElement.maxChoose! &&
@@ -62,7 +64,7 @@ export const SimpleCheckBoxLIst = ({ configElement, setValue, id }: InputProps) 
                     {value}
                 </div>
             )}
-            {storedValidity ? <div style={{color:"#006600"}}>Valido</div> : <div style={{color:"#cc0000"}}>Non Valido</div>}
+            {storedValidity ? <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
         </>
     )
 }

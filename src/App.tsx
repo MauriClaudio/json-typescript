@@ -4,6 +4,7 @@ import dbjsonprova from "./data/dbconfprova.json"
 import dbjson1 from "./data/dbconf1.json"
 import dbjsonAll from "./data/dbconfAll.json"
 import dbjsonnopw from "./data/dbconfnopw.json"
+import dbvalidity from "./data/prova_validity.json"
 import { ComplexList } from "./components/list/ComplexList"
 import { SimpleList } from "./components/list/SimpleList"
 import { Object } from "./components/Object"
@@ -43,6 +44,9 @@ function App() {
         }
         else if (value === "dbconfnopw") {
             return dbjsonnopw
+        }
+        else if (value === "prova_validity") {
+            return dbvalidity
         }
         else return ""
     }

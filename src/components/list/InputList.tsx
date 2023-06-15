@@ -6,10 +6,18 @@ import { InputNumber } from "../input/InputNumber"
 
 export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => {
 
-    const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
-    const [idList, setIdList] = useState<number[]>([])
+    let n: number = 0
+    let baseArray: number[] = []
+    while (n < configElement.minListElements!) {
+        baseArray.push(n)
+        n++
+    }
 
-    const [storedValidity, setStoredValidity] = useState<Validity[]>([])
+    const [idList, setIdList] = useState<number[]>(baseArray)
+    const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
+    const [storedValidity, setStoredValidity] = useState<Validity[]>(
+        idList.map((item: number) => { return { name: "" + item, validity: false } })
+    )
 
     function handleAdd() {
         let newIdList: number[] = idList.slice()
@@ -17,6 +25,11 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
         const newId: number = idCount + 1
         newIdList.push(newId)
         setIdList(newIdList)
+        
+        const g : Validity[]= storedValidity.slice()
+        g.push({name:newId+"", validity: configElement.required === true ? false : true,})
+
+        setStoredValidity(g)
         //
         console.log("ADD :", newIdList)
     }
@@ -67,9 +80,10 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
         )
     }
 
-
     return (
-        <>
+        <div 
+        id={configElement.name + (!storedValidity.find((item: Validity) => item.validity === false) ? true : false) + id}
+        >
             {idList.map((mapId: number) =>
                 <div key={mapId.toString()}>
                     {
@@ -79,6 +93,8 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
                                     {
                                         name: "",
                                         type: configElement.datatype,
+                                        required: configElement.required === true ||
+                                            (configElement.minListElements && configElement.minListElements-1 >= mapId) ? true : undefined,
                                         properties: configElement.properties
                                     }}
                                 setValue={setThisValue}
@@ -91,6 +107,7 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
                                         {
                                             name: "",
                                             type: configElement.datatype,
+                                            required: configElement.required || configElement.minListElements ? true : false,
                                             properties: configElement.properties
                                         }}
                                     setValue={setThisValue}
@@ -99,10 +116,14 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
                                 :
                                 <>{"Type not found"}</>
                     }
-                    <button
-                        name={mapId.toString()}
-                        onClick={handleRemove}
-                    > X </button>
+                    {mapId < configElement.minListElements! ?
+                        null
+                        :
+                        <button
+                            name={mapId.toString()}
+                            onClick={handleRemove}
+                        > X </button>
+                    }
                 </div>
             )}
             <button
@@ -115,7 +136,7 @@ export const SimpleInputList = ({ configElement, setValue, id }: InputProps) => 
             {idList.length !== 0 ? <br /> : null}
             {!storedValidity.find((item: Validity) => item.validity === false) ?
                 <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
-        </>
+        </div >
     )
 }
 

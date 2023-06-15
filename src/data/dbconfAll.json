@@ -1,6 +1,7 @@
 {
-    "default": "dbconfnopw",
+    "default": "prova_validity",
     "AllNames": [
+        "prova_validity",
         "dbconfnopw",
         "dbconf1",
         "dbconfprova"

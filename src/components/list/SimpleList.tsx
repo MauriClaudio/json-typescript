@@ -15,7 +15,8 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
         <>
             {configElement.name + " : ["}
             {configElement.values ?
-                configElement.maxChoose && configElement.maxChoose > 1 ?
+                configElement.maxChoose && configElement.maxChoose > 1 
+                ||configElement.minChoose && configElement.minChoose > 1 ?
                     <SimpleCheckBoxLIst configElement={configElement} setValue={setThisValue} id={id}/>
                     :
                     configElement.values.length! <= 3 ?

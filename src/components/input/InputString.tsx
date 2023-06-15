@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { InputProps } from "../../types/ConfigAll"
 
 export const InputString = ({ configElement, setValue, id }: InputProps) => {
 
     const [storedValidity, setStoredValidity] = useState<boolean>(!configElement.required)
-
-    //useEffect(()=>{setValue({name:configElement.name}, storedValidity)},[])
 
     const handleOnChange = (e: any) => {
         let value: string = e.currentTarget.value
@@ -19,14 +17,14 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
             currentValidity = true
         }
         else if (configElement.properties) {
-            
+
             if (configElement.properties?.onlyLowerCase) {
                 value = value.toLowerCase()
             }
             else if (configElement.properties?.onlyUpperCase) {
                 value = value.toUpperCase()
             }
-            
+
             if (
                 (configElement.properties?.minLength && value.length < configElement.properties.minLength)
                 || (configElement.properties?.needUpperCase && !/[A-Z]/g.test(value))
@@ -60,8 +58,8 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
         <>
             {configElement.name === "" ? null : configElement.name + " : "}
             <input
+                id={configElement.name + storedValidity + id}
                 type={configElement.properties?.password ? "password" : "text"}
-                maxLength={configElement.properties?.maxLength}
                 onChange={handleOnChange}
                 onKeyUp={(e) => {
                     if (configElement.properties?.onlyUpperCase)
@@ -69,8 +67,9 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
                     else if (configElement.properties?.onlyLowerCase)
                         e.currentTarget.value = e.currentTarget.value.toLowerCase()
                 }}
+                maxLength={configElement.properties?.maxLength}
             />
-            {storedValidity ? <div style={{color:"#006600"}}>Valido</div> : <div style={{color:"#cc0000"}}>Non Valido</div>}
+            {storedValidity ? <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
         </>
     )
 }

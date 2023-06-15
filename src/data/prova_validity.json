@@ -1,0 +1,22 @@
+{
+    "name": "dbjson",
+    "mastertype": "object",
+    "minListElements": 1,
+    "elements": [
+        {
+            "name": "obj",
+            "type": "object",
+            "elements": [
+                {
+                    "name": "Input bo1",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Input bo2",
+                    "type": "boolean"
+                }
+            ]
+        }
+    ]
+}

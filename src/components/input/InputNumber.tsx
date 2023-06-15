@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { InputProps } from "../../types/ConfigAll"
 
 export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
 
     const [storedValidity, setStoredValidity] = useState<boolean>(!configElement.required)
-
-    //useEffect(()=>{setValue({name:configElement.name}, storedValidity)},[])
 
     const handleOnChange = (e: any) => {
         const value: string = e.currentTarget.value
@@ -44,7 +42,9 @@ export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
     return (
         <>
             {configElement.name === "" ? null : configElement.name + " : "}
-            <input type="number"
+            <input
+                id={configElement.name + storedValidity + id}
+                type="number"
                 onChange={handleOnChange}
                 onBeforeInput={(e) => {
                     if (configElement.properties?.maxLength)
@@ -52,7 +52,7 @@ export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
                             e.preventDefault()
                 }}
             />
-            {storedValidity ? <div style={{color:"#006600"}}>Valido</div> : <div style={{color:"#cc0000"}}>Non Valido</div>}
+            {storedValidity ? <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
         </>
     )
 }
