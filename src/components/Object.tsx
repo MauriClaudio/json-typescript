@@ -15,6 +15,13 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
 
     /**/
     useEffect(() => {
+        setJsonElements([])
+        setStoredValidity([])
+    }, [configElement])
+    /**/
+
+    /**
+    useEffect(() => {
         const initialValidity: Validity[] = configElement.elements?.map((item: ConfigElement) => {
             console.log("bool id to search:", item.name + false + id)
             return {
@@ -46,7 +53,6 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
 
         const newValidity: Validity[] = storedValidity.filter((item: Validity) => item.name !== js.name)
         newValidity.push({ name: js.name, validity: validity })
-
         setValue(newJs, newValidity.find((item: Validity) => item.validity === false) ? false : true)
 
         setStoredValidity(newValidity)

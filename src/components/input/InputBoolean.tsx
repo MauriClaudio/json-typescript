@@ -4,12 +4,18 @@ import { InputProps } from "../../types/ConfigAll"
 export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
 
     const [storedValidity, setStoredValidity] = useState<boolean>(!configElement.required)
+    const [check, setCheck] = useState<boolean>(false)
 
+    useEffect(() => {
+        setCheck(false)
+        setStoredValidity(!configElement.required)
+    }, [configElement])
+    
     //useEffect(()=>{setValue({ name: configElement.name, id: id }, !configElement.required)} , [])
-    console.log("real bool id :", configElement.name + storedValidity + id)
+    //console.log("real bool id :", configElement.name + storedValidity + id)
 
     const handleOnChange = (e: any) => {
-
+        setCheck(!check)
         let currentValidity: boolean = true
 
         if (configElement.required && e.currentTarget.checked === false) {
@@ -30,6 +36,7 @@ export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
                 id={configElement.name + storedValidity + id}
                 type="checkbox"
                 onChange={handleOnChange}
+                checked={check}
             />
             {storedValidity ? <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
         </>

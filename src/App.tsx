@@ -1,14 +1,14 @@
 import { useState } from "react"
 
-import dbjsonprova from "./data/dbconfprova.json"
-import dbjson1 from "./data/dbconf1.json"
-import dbjsonAll from "./data/dbconfAll.json"
-import dbjsonnopw from "./data/dbconfnopw.json"
-import dbvalidity from "./data/prova_validity.json"
+import dbconf from "./data/dbconf.json"
+import dbconfAll from "./data/dbconfAll.json"
+import dbvalidity1 from "./data/dbvalidity1.json"
+import dbvalidity2 from "./data/dbvalidity2.json"
 import { ComplexList } from "./components/list/ComplexList"
 import { SimpleList } from "./components/list/SimpleList"
 import { Object } from "./components/Object"
 import { JsonStructure } from "./types/ConfigAll"
+
 import axios from "axios"
 
 function App() {
@@ -36,49 +36,46 @@ function App() {
         if (json !== undefined) {
             setJson(undefined)
         }
-        if (value === "dbconf1") {
-            return dbjson1
+        if (value === "dbconf") {
+            return dbconf
         }
-        else if (value === "dbconfprova") {
-            return dbjsonprova
+        else if (value === "dbvalidity1") {
+            return dbvalidity1
         }
-        else if (value === "dbconfnopw") {
-            return dbjsonnopw
+        else if (value === "dbvalidity2") {
+            return dbvalidity2
         }
-        else if (value === "prova_validity") {
-            return dbvalidity
-        }
-        else return ""
+        else return { name: "Error: db not found" }
     }
 
-    const [dbjson, setDbJson] = useState<any>(handleDbConfChange(dbjsonAll.default))
+    const [conf, setConf] = useState<any>(handleDbConfChange(dbconfAll.default))
 
     return (
         <>
-            <select onChange={e => setDbJson(handleDbConfChange(e.currentTarget.value))}>
-                {dbjsonAll.AllNames.map((item: string) => <option key={item}>{item}</option>)}
+            {/**/}
+            <select onChange={e => setConf(handleDbConfChange(e.currentTarget.value))}>
+                {dbconfAll.AllNames.map((item: string) => <option key={item}>{item}</option>)}
             </select>
             <br />
-            {dbjson !== "" ?
-                dbjson.mastertype === "list" ?
-                    dbjson.elements ?
+            {conf !== "" ?
+                conf.mastertype === "list" ?
+                    conf.elements ?
                         <ComplexList
-                            configElement={{
-                                name: "dbjson", type: "list", minListElements: dbjson.minListElements, elements: dbjson.elements
-                            }}
-                            setValue={setValue} />
+                            configElement={conf}
+                            setValue={setValue}
+                            id="1"
+                        />
                         :
                         <SimpleList
-                            configElement={{
-                                name: "dbjson", type: "list", elements: dbjson.elements
-                            }}
-                            setValue={setValue} />
+                            configElement={conf}
+                            setValue={setValue}
+                            id="1"
+                        />
                     :
                     <Object
-                        configElement={{
-                            name: "dbjson", type: "object", elements: dbjson.elements
-                        }}
+                        configElement={conf}
                         setValue={setValue}
+                        id="1"
                     />
                 : null
             }
@@ -92,6 +89,7 @@ function App() {
                 target="_blank">
                 <button>download</button>
             </a>
+            {/**/}
         </>
     )
 }

@@ -1,4 +1,6 @@
 {
+    "name": "dbconf",
+    "type": "list",
     "mastertype": "list",
     "minListElements": 1,
     "elements": [
@@ -43,7 +45,17 @@
                         {
                             "name": "Input Text",
                             "type": "string",
-                            "required": true
+                            "required": true,
+                            "properties": {
+                                "password": true,
+                                "minLength": 5,
+                                "maxLength": 26,
+                                "needLowerCase": true,
+                                "needUpperCase": true,
+                                "needNumbers": true,
+                                "needLetters": true,
+                                "needSpecialCharacters": true
+                            }
                         }
                     ]
                 },

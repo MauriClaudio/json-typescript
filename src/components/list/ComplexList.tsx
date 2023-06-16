@@ -16,6 +16,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
     const [storedValidity, setStoredValidity] = useState<Validity[]>([])
 
+    /**
     useEffect(() => {
         //const initialValidity: Validity[] = [{name: "0", validity: false}]
 
@@ -32,6 +33,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps) => {
         //
         console.log("initial validity", initialValidity)
     }, [])
+    /**/
 
     const handleAdd = () => {
         let newIdList: number[] = idList.slice()

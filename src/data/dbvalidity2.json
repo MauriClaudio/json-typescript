@@ -1,5 +1,6 @@
 {
-    "name": "dbjson",
+    "name": "validity2",
+    "type": "object",
     "mastertype": "object",
     "minListElements": 1,
     "elements": [
