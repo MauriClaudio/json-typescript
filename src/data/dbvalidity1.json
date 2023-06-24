@@ -1,20 +1,20 @@
 {
-    "name": "validity1",
+    "name": "val",
     "type": "object",
     "mastertype": "object",
     "minListElements": 1,
     "elements": [
         {
-            "name": "obj",
+            "name": "obj1",
             "type": "object",
             "elements": [
                 {
-                    "name": "Input bo1",
+                    "name": "boo1",
                     "type": "boolean",
                     "required": true
                 },
                 {
-                    "name": "Input bo2",
+                    "name": "boo2",
                     "type": "boolean"
                 }
             ]

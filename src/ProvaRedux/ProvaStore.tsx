@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import ProvaSlice from './ProvaSlice';
+//import ProvaSlice from './ProvaSlice';
+import ProvaSlice from './ProvaValiditySlice';
 
 const store = configureStore({
     reducer: {

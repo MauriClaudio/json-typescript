@@ -21,6 +21,10 @@ export type ConfigElement = {
     name: string
     type: string
 
+    //
+    validity?:boolean
+    //
+
     datatype?: string
     elements?: ConfigElement[]
     maxChoose?: number
