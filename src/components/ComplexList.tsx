@@ -117,7 +117,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
                                 id={configElement.name + id}
                             />
                             {configElement.minListElements &&
-                            item >= configElement.minListElements ?
+                            item < configElement.minListElements ?
                                 null :
                                 <button
                                     name={item + ''}

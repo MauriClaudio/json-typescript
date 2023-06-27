@@ -1,6 +1,7 @@
 {
     "name": "dbconf",
     "type": "list",
+    "id":4,
     "minListElements": 1,
     "elements": [
         {
