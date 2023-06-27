@@ -1,13 +1,26 @@
-import { useState } from "react"
-import { InputProps } from "../../types/ConfigAll"
+import { useEffect, useState } from "react"
+import { InputProps } from "../../../types/ConfigAll"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../../redux/ValidityStore"
+import { add, upd } from "../../redux/ValiditySlice"
 
 export const InputString = ({ configElement, setValue, id }: InputProps) => {
 
-    const [storedValidity, setStoredValidity] = useState<boolean>(!configElement.required)
+    const [thisValue, setThisValue] = useState<string>()
+    const [validity, setValidity] = useState<boolean>(!configElement.required)
 
-    const handleOnChange = (e: any) => {
-        let value: string = e.currentTarget.value
+    const dispatch = useDispatch<AppDispatch>()
 
+    useEffect(() => {
+        dispatch(add({ id: configElement.name + id, fatherId: id, validity: validity }))
+    }, [])
+
+    useEffect(() => {
+        dispatch(upd({ id: configElement.name + id, fatherId: id, validity: validity }))
+    }, [validity])
+
+    const handleOnChange = (value: string) => {
+        setThisValue(value)
         let currentValidity: boolean = true
 
         if (configElement.required && value === "") {
@@ -40,27 +53,16 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
             }
         }
 
-        console.log("input : ", {
-            name: configElement.name,
-            value: value,
-            id: id
-        }, currentValidity)
-
-        setValue({
-            name: configElement.name,
-            value: value,
-            id: id
-        }, currentValidity)
-        setStoredValidity(currentValidity)
+        setValidity(currentValidity)
+        setValue({ name: configElement.name, value: thisValue, id: id })
     }
 
     return (
         <>
             {configElement.name === "" ? null : configElement.name + " : "}
             <input
-                id={configElement.name + storedValidity + id}
                 type={configElement.properties?.password ? "password" : "text"}
-                onChange={handleOnChange}
+                onChange={e => handleOnChange(e.currentTarget.value)}
                 onKeyUp={(e) => {
                     if (configElement.properties?.onlyUpperCase)
                         e.currentTarget.value = e.currentTarget.value.toUpperCase()
@@ -69,7 +71,10 @@ export const InputString = ({ configElement, setValue, id }: InputProps) => {
                 }}
                 maxLength={configElement.properties?.maxLength}
             />
-            {storedValidity ? <div style={{ color: "#006600" }}>Valido</div> : <div style={{ color: "#cc0000" }}>Non Valido</div>}
+            {validity ?
+                <div style={{ color: "#006600" }}>Valido</div> :
+                <div style={{ color: "#cc0000" }}>Non Valido</div>
+            }
         </>
     )
 }

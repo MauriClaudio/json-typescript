@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-//import App from './App';
-import App from './ProvaRedux/ProvaApp'; 
+import App from './App';
+//import App from './ProvaRedux/ProvaApp'; 
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
-import ProvaStore from './ProvaRedux/ProvaStore';
+//import ProvaStore from './ProvaRedux/ProvaStore';
+import validityStore from './components/redux/ValidityStore';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Provider store={ProvaStore}>
+  <Provider store={validityStore}>
     <App />
   </Provider>
 );

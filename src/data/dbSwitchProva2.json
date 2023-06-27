@@ -1,0 +1,18 @@
+{
+    "name": "dbconf2",
+    "type": "object",
+    "id": 2,
+    "minListElements": 1,
+    "elements": [
+        {
+            "name": "Input Boolean1",
+            "type": "boolean",
+            "required": true
+        },
+        {
+            "name": "Input Boolean2",
+            "type": "boolean",
+            "required": true
+        }
+    ]
+}

@@ -6,15 +6,16 @@ export type validity = {
     validity: boolean
 }
 
-const ProvaSlice = createSlice({
-    name: 'prova',
+const ValiditySlice = createSlice({
+    name: 'validity',
     initialState: [] as validity[],
     reducers: {
 
         add(state, action: PayloadAction<validity>) {
+            console.log('slice ADD',action.payload.id)
             let validity: boolean = action.payload.validity
             const haveChild: boolean = state.find((item: validity) => item.fatherId === action.payload.id) ? true : false
-            console.log('haveChild', haveChild)
+            //console.log('haveChild', haveChild)
 
             if (haveChild) {
                 validity = state.find((item: validity) =>
@@ -22,7 +23,7 @@ const ProvaSlice = createSlice({
                     item.validity === false)
                     ?
                     false : true
-                console.log('validity', validity)
+                //console.log('validity', validity)
             }
 
             state.push({ id: action.payload.id, fatherId: action.payload.fatherId, validity: validity })
@@ -30,16 +31,17 @@ const ProvaSlice = createSlice({
         },
 
         upd(state, action: PayloadAction<validity>) {
+            console.log('slice UPD',action.payload.id)
             let validity: boolean = action.payload.validity
             const haveChild: boolean = state.find((item: validity) => item.fatherId === action.payload.id) ? true : false
-            console.log('haveChild', haveChild)
+            //console.log('haveChild', haveChild)
             if (haveChild) {
                 validity = state.find((item: validity) =>
                     item.fatherId === action.payload.id &&
                     item.validity === false)
                     ?
                     false : true
-                console.log('validity', validity)
+                //console.log('validity', validity)
             }
             const index: number = state.findIndex((item: validity) => item.id === action.payload.id)
             state.splice(index, 1)
@@ -47,19 +49,29 @@ const ProvaSlice = createSlice({
         },
 
         get(state) {
+            console.log('slice GET')
             return current(state)
         },
         
         del(state, action: PayloadAction<string>) {
+            console.log('slice DEL',action.payload)
             const index: number = state.findIndex((item: validity) => item.id === action.payload)
             state.splice(index, 1)
+            console.log(current(state))
+        },
+
+        reset(state) {
+            console.log('slice RESET')
+            const lenght:number = state.length
+            state.splice(0, lenght)
+            console.log(current(state))
         },
         
     },
 })
 
 export const getThunk = createAsyncThunk(
-    "prova/get",
+    "validity/get",
     async (arg, thunkAPI) => {
         try {
             return await thunkAPI.getState()
@@ -69,6 +81,6 @@ export const getThunk = createAsyncThunk(
     }
 );
 
-export const { add, upd, del } = ProvaSlice.actions
+export const { add, upd, del, reset } = ValiditySlice.actions
 
-export default ProvaSlice.reducer
+export default ValiditySlice.reducer

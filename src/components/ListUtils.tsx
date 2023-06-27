@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
 
 import { ConfigElement, InputProps, JsonStructure } from "../types/ConfigAll"
+import { useDispatch } from "react-redux"
 import { AppDispatch } from "./redux/ValidityStore"
 import { add, getThunk, upd, validity } from "./redux/ValiditySlice"
 import { SetPath } from "./SetPath"
 
-export const Object = ({ configElement, setValue, id }: InputProps) => {
-
-    // useEffect(() => {
-    //     setJsonElements([])
-    //     setStoredValidity([])
-    // }, [configElement])
+export const ListUtils = ({ configElement, setValue, id }: InputProps) => {
 
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
 
@@ -23,8 +18,8 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
 
         let newJs: JsonStructure
 
-        if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: id } }
-        else { newJs = { name: configElement.name, elements: newJsonElements, id: id } }
+        if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: configElement.name } }
+        else { newJs = { name: configElement.name, elements: newJsonElements, id: configElement.name } }
 
         setJsonElements(newJsonElements)
         setValue(newJs)
@@ -36,12 +31,12 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(add({ id: configElement.name + id, fatherId: '' + id, validity: true }))
+        dispatch(add({ id: configElement.name + id, fatherId: id, validity: true }))
         updValidity()
     }, [])
 
     useEffect(() => {
-        dispatch(upd({ id: configElement.name + id, fatherId: '' + id, validity: true }))
+        dispatch(upd({ id: configElement.name + id, fatherId: id, validity: true }))
         updValidity()
     }, [jsonElements])
 
@@ -63,8 +58,8 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
             {configElement.elements?.map((item: ConfigElement) =>
                 <div key={item.name} style={{ paddingLeft: "24px" }}>
                     <SetPath
-                        configElement={item}
                         setValue={setThisValue}
+                        configElement={item}
                         id={configElement.name + id}
                     />
                 </div>

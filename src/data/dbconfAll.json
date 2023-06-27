@@ -1,8 +1,8 @@
 {
-    "default": "dbvalidity1",
+    "default": "dbprova1",
     "AllNames": [
-        "dbvalidity1",
-        "dbconf",
-        "dbvalidity2"
+        "dbprova1",
+        "dbprova2",
+        "dbconf"
     ]
 }

@@ -1,7 +1,6 @@
 {
     "name": "dbconf",
     "type": "list",
-    "mastertype": "list",
     "minListElements": 1,
     "elements": [
         {
@@ -85,7 +84,7 @@
                 {
                     "name": "SL_Input",
                     "type": "list",
-                    "datatype": "text",
+                    "datatype": "string",
                     "maxChoose": 5,
                     "minChoose": 2,
                     "required": true,

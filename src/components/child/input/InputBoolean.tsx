@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
-import { InputProps } from "../../types/ConfigAll"
-import { AppDispatch } from "../../ProvaRedux/ProvaStore"
+import { InputProps } from "../../../types/ConfigAll"
+import { AppDispatch } from "../../redux/ValidityStore"
 import { useDispatch } from "react-redux"
-import { add, upd } from "../../ProvaRedux/ProvaValiditySlice"
+import { add, upd } from "../../redux/ValiditySlice"
 
 export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
 
     // useEffect(() => {
     //     setCheck(false)
     //     setValidity(!configElement.required)
-    // }, [configElement])
+    // }, [id])
 
     const [check, setCheck] = useState<boolean>(false)
     const [validity, setValidity] = useState<boolean>(!configElement.required)
@@ -17,11 +17,11 @@ export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(add({ id: configElement.name + id, fatherId: '' + id, validity: validity }))
+        dispatch(add({ id: configElement.name + id, fatherId: id, validity: validity }))
     }, [])
 
     useEffect(() => {
-        dispatch(upd({ id: configElement.name + id, fatherId: '' + id, validity: validity }))
+        dispatch(upd({ id: configElement.name + id, fatherId: id, validity: validity }))
     }, [validity])
 
     const handleOnChange = (checked: boolean) => {
