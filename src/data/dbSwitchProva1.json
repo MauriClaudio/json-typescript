@@ -5,6 +5,13 @@
     "minListElements": 1,
     "elements": [
         {
+            "name":"inputlist",
+            "type": "list",
+            "datatype": "number",
+            "minChoose": 2,
+            "required": true
+        },
+        {
             "name": "Input Boolean1",
             "type": "boolean",
             "required": true

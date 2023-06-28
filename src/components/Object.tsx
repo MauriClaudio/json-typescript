@@ -6,25 +6,18 @@ import { AppDispatch } from "./redux/ValidityStore"
 import { add, getThunk, upd, validity } from "./redux/ValiditySlice"
 import { SetPath } from "./SetPath"
 
-export const Object = ({ configElement, setValue, id }: InputProps) => {
-
-    // useEffect(() => {
-    //     setJsonElements([])
-    //     setStoredValidity([])
-    // }, [configElement])
+export const Object = ({ configElement, setValue, id, listUtils }: InputProps) => {
 
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
 
     const setThisValue = async (js: JsonStructure) => {
-        //console.log("to " + configElement.name + " : ", js)
+        console.log("to " + configElement.name + " :", js)
         const newJsonElements: JsonStructure[] = jsonElements.filter((item: JsonStructure) => item.name !== js.name)
 
         if (js.elements || js.value || js.values) { newJsonElements.push(js) }
 
-        let newJs: JsonStructure
-
-        if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: id } }
-        else { newJs = { name: configElement.name, elements: newJsonElements, id: id } }
+        let newJs: JsonStructure = { name: configElement.name, elements: newJsonElements, id: listUtils ? listUtils : id }
+        if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: listUtils ? listUtils : id } }
 
         setJsonElements(newJsonElements)
         setValue(newJs)
@@ -36,12 +29,11 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(add({ id: configElement.name + id, fatherId: '' + id, validity: true }))
-        updValidity()
+        dispatch(add({ id: configElement.name + id, fatherId: id, validity: true }))
     }, [])
 
     useEffect(() => {
-        dispatch(upd({ id: configElement.name + id, fatherId: '' + id, validity: true }))
+        dispatch(upd({ id: configElement.name + id, fatherId: id, validity: true }))
         updValidity()
     }, [jsonElements])
 
@@ -52,9 +44,10 @@ export const Object = ({ configElement, setValue, id }: InputProps) => {
         setValidity(data[index].validity)
     }
 
+
     return (
         <div>
-            {configElement.name !== "" ? configElement.name + " : {" : "{"}
+            {configElement.name + " : {"}
             {validity ?
                 <div style={{ color: "#006600" }}>Valido</div> :
                 <div style={{ color: "#cc0000" }}>Non Valido</div>

@@ -16,7 +16,6 @@ const ValiditySlice = createSlice({
             let validity: boolean = action.payload.validity
             const haveChild: boolean = state.find((item: validity) => item.fatherId === action.payload.id) ? true : false
             //console.log('haveChild', haveChild)
-
             if (haveChild) {
                 validity = state.find((item: validity) =>
                     item.fatherId === action.payload.id &&
@@ -25,7 +24,6 @@ const ValiditySlice = createSlice({
                     false : true
                 //console.log('validity', validity)
             }
-
             state.push({ id: action.payload.id, fatherId: action.payload.fatherId, validity: validity })
             console.log(current(state))
         },

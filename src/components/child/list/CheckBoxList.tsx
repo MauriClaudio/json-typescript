@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import { InputProps } from "../../../types/ConfigAll"
-import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../redux/ValidityStore"
 import { add, upd } from "../../redux/ValiditySlice"
 
 export const CheckBoxLIst = ({ configElement, setValue, id }: InputProps) => {
+
     const [arrayCheck, setArrayCheck] = useState<string[]>([])
 
     const [validity, setValidity] = useState<boolean>(
@@ -27,34 +28,21 @@ export const CheckBoxLIst = ({ configElement, setValue, id }: InputProps) => {
 
     const handleOnChange = (name: string, check: boolean) => {
         let newCheck: string[] = arrayCheck.slice()
-        if (check) {
-            newCheck.push(name)
-        }
-        else {
-            newCheck = arrayCheck.filter((item: string) => item !== name)
-        }
-        console.log("check", newCheck)
+
+        if (check) { newCheck.push(name) }
+        else { newCheck = arrayCheck.filter((item: string) => item !== name) }
+
         setArrayCheck(newCheck)
 
         let currentValidty: boolean = true
-        if (configElement.minChoose) {
-            if (newCheck.length < configElement.minChoose) {
-                currentValidty = false
-            }
-        }
-        if (configElement.required) {
-            if (newCheck.length < 1) {
-                currentValidty = false
-            }
+        if (configElement.minChoose && newCheck.length < configElement.minChoose ||
+            configElement.required && newCheck.length < 1) {
+            currentValidty = false
         }
 
-        if (newCheck.length === 0) {
-            setValue({ name: configElement.name, id: id })
-        }
-        else {
-            setValue({ name: configElement.name, values: newCheck, id: id })
-        }
+        setValue({ name: configElement.name, values: newCheck, id: id })
         setValidity(currentValidty)
+        //console.log("check", newCheck)
     }
 
     return (

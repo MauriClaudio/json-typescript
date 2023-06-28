@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+
 import { InputProps } from "../../../types/ConfigAll"
 import { AppDispatch } from "../../redux/ValidityStore"
-import { useDispatch } from "react-redux"
 import { add, upd } from "../../redux/ValiditySlice"
 
 export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
 
-    // useEffect(() => {
-    //     setCheck(false)
-    //     setValidity(!configElement.required)
-    // }, [id])
-
-    const [check, setCheck] = useState<boolean>(false)
     const [validity, setValidity] = useState<boolean>(!configElement.required)
 
     const dispatch = useDispatch<AppDispatch>()
@@ -25,12 +20,9 @@ export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
     }, [validity])
 
     const handleOnChange = (checked: boolean) => {
-        setCheck(!check)
-        let currentValidity: boolean = true
-
-        if (configElement.required && checked === false) { currentValidity = false }
-
-        setValidity(currentValidity)
+        if (configElement.required) {
+            setValidity(checked)
+        }
         setValue({ name: configElement.name, value: checked.toString(), id: id })
     }
 
@@ -39,7 +31,6 @@ export const InputBoolean = ({ configElement, setValue, id }: InputProps) => {
             {configElement.name + " : "}
             <input
                 type="checkbox"
-                checked={check}
                 onChange={e => handleOnChange(e.currentTarget.checked)}
             />
             {validity ?

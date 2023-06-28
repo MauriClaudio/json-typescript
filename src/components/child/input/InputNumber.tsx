@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { InputProps } from "../../../types/ConfigAll"
 import { useDispatch } from "react-redux"
+
+import { InputProps } from "../../../types/ConfigAll"
 import { AppDispatch } from "../../redux/ValidityStore"
 import { add, upd } from "../../redux/ValiditySlice"
 
 export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
 
-    const [thisValue, setThisValue] = useState<string>('')
     const [validity, setValidity] = useState<boolean>(!configElement.required)
 
     const dispatch = useDispatch<AppDispatch>()
@@ -20,7 +20,6 @@ export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
     }, [validity])
 
     const handleOnChange = (value: string) => {
-        setThisValue(value)
         let currentValidity: boolean = true
 
         if (configElement.required && value === "") {
@@ -39,15 +38,14 @@ export const InputNumber = ({ configElement, setValue, id }: InputProps) => {
         }
 
         setValidity(currentValidity)
-        setValue({ name: configElement.name, value: thisValue + '', id: id })
+        setValue({ name: configElement.name, value: value + '', id: configElement.name + id })
     }
 
     return (
         <>
-            {configElement.name === "" ? null : configElement.name + " : "}
+            {configElement.name + " : "}
             <input
                 type="number"
-                value={thisValue}
                 onChange={e => handleOnChange(e.currentTarget.value)}
                 onBeforeInput={(e) => {
                     if (configElement.properties?.maxLength)

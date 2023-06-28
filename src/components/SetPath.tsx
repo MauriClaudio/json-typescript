@@ -10,6 +10,7 @@ import { RadioList } from "./child/list/RadioList"
 import { SelectList } from "./child/list/SelectList"
 
 export const SetPath = ({ configElement, setValue, id }: InputProps) => {
+    //console.log("id", id)
     return (
         <>
             {configElement.type === 'object' ?

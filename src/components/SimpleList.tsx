@@ -11,10 +11,9 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
     const baseArray: number[] = []
     for (let i: number = 0; i < configElement.minChoose!; i++) { baseArray.push(i) }
 
+    const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
 
     const [idList, setIdList] = useState<number[]>(baseArray)
-    const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
-    const [validity, setValidity] = useState<boolean>(true)
 
     function handleAdd() {
         let newIdList: number[] = idList.slice()
@@ -22,7 +21,8 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
         const newId: number = idCount + 1
         newIdList.push(newId)
         setIdList(newIdList)
-        setValue({ name: configElement.name, id: id, elements: jsonElements })
+        const jsonValues: string[] = jsonElements.map((item: JsonStructure) => { return item.value! })
+        setValue({ name: configElement.name, id: id, values: jsonValues })
         //console.log("ADD :", newIdList)
     }
 
@@ -31,44 +31,39 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
 
         const newIdList: number[] = idList.filter((filterId: number) => filterId !== parseInt(targetId))
         setIdList(newIdList)
-        //console.log("DEL :", newIdList)
 
-        //if (jsonElements.find((element: JsonStructure) => element.id === targetId)) {
         const newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== targetId)
 
-        // let newJs: JsonStructure
-        // if (newJsonElements.length === 0) {
-        //     newJs = { name: configElement.name, id: id }
-        // }
-        // else {
-        //     const jsonValues: string[] = newJsonElements.map((element: JsonStructure) => { return element.value! })
-        //     newJs = { name: configElement.name, values: jsonValues, id: id }
-        // }
-
-        // setJsonElements(newJsonElements)
-        // setValue(newJs)
+        let newJs: JsonStructure = { name: configElement.name, id: id }
+        if (newJsonElements.length !== 0) {
+            const jsonValues: string[] = newJsonElements.map((element: JsonStructure) => { return element.value! })
+            newJs = { name: configElement.name, values: jsonValues, id: id }
+        }
 
         setJsonElements(newJsonElements)
-        setValue({ name: configElement.name, elements: newJsonElements, id: id })
-        //}
+        setValue(newJs)
+        //console.log("DEL :", newIdList)
     }
 
 
     function setThisValue(js: JsonStructure) {
+        //console.log('to ' + configElement.name + ' :', js)
         const newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== js.id)
         newJsonElements.push(js)
 
         setJsonElements(newJsonElements)
 
-        const jsonValues: string[] = newJsonElements.map((item: JsonStructure) => { return item.value! })
+        const jsonValues: string[] = newJsonElements.map((item: JsonStructure) => { return item.value || '' })
         setValue({ name: configElement.name, values: jsonValues, id: id })
     }
+
+
+    const [validity, setValidity] = useState<boolean>(true)
 
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(add({ id: configElement.name + id, fatherId: id, validity: validity }))
-        updValidity()
+        dispatch(add({ id: configElement.name + id, fatherId: id, validity: true }))
     }, [])
 
     useEffect(() => {
@@ -83,6 +78,7 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
         setValidity(data[index].validity)
     }
 
+
     return (
         <div>
             {idList.map((mapId: number) =>
@@ -91,7 +87,7 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
                         configElement={
                             {
                                 name: mapId + "",
-                                type: configElement.datatype ? configElement.datatype : '',
+                                type: configElement.datatype!,
                                 required: configElement.required || configElement.minListElements ? true : false,
                                 properties: configElement.properties
                             }}
@@ -110,10 +106,7 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
             )}
             <button
                 onClick={handleAdd}
-                disabled={
-                    idList.length >= configElement.maxChoose! ?
-                        true : false
-                }
+                disabled={idList.length >= configElement.maxChoose! ? true : false}
             >ADD</button>
             {idList.length !== 0 ? <br /> : null}
             {validity ?
@@ -123,48 +116,3 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
         </div >
     )
 }
-
-
-/** *
-type koko = {
-    validity: boolean
-    id: string
-}
-/** */
-
-
-/** *
-const [storedValidity, setStoredValidity] = useState<boolean>(
-    !(
-        configElement.required
-        ||
-        (configElement.minChoose ? configElement.minChoose > 0 : false)
-    )
-)
-/** */
-
-    //const [storedArrayValidity, setStoredArrayValidity] = useState<koko[]>([])
-
-
-
-
-
-
-
-/**
-const handleValidity = (values: string[], id: string) => {
-
-    let currentValidty: boolean = true
-    if (configElement.minChoose) {
-        if (values.length < configElement.minChoose) {
-            currentValidty = false
-        }
-    }
-    if (configElement.required) {
-        if (values.length < 1) {
-            currentValidty = false
-        }
-    }
-    setStoredValidity(currentValidty)
-}
-/**/

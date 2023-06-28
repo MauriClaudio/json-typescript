@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import { InputProps } from "../../../types/ConfigAll"
-import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../redux/ValidityStore"
 import { add, upd } from "../../redux/ValiditySlice"
 
@@ -20,7 +20,9 @@ export const RadioList = ({ configElement, setValue, id }: InputProps) => {
     }, [validity])
 
     const handleOnChange = (value: string) => {
-        setValidity(true)
+        if (!validity) {
+            setValidity(true)
+        }
         setValue({ name: configElement.name, value: value, id: id })
     }
 

@@ -65,23 +65,29 @@ function App() {
     }
 
     return (
-        <div key={conf.id}>
+        <>
             <select onChange={e => handleConfChange(e.currentTarget.value)}>
                 {dbconfAll.AllNames.map((item: string) => <option key={item}>{item}</option>)}
             </select>
-            <button onClick={getObject}>GET</button>
-            <br /><br />
-            <SetPath configElement={conf} setValue={setJson} id={''} />
-            <br /><br />
-            <input type="submit" disabled={!validity} onClick={e => handleSubmit()} />
-            <br />
-            <a
-                href={'data: application/json;charset=utf-8; ,' + encodeURIComponent(JSON.stringify(json, null, 2))}
-                download="dbdataDownload"
-                target="_blank">
-                <button>download</button>
-            </a>
-        </div>
+            <div key={conf.id}>
+                <button onClick={getObject}>GET</button>
+                <br /><br />
+                <SetPath
+                    configElement={conf}
+                    setValue={setJson}
+                    id={''}
+                />
+                <br /><br />
+                <input type="submit" disabled={!validity} onClick={e => handleSubmit()} />
+                <br />
+                <a
+                    href={'data: application/json;charset=utf-8; ,' + encodeURIComponent(JSON.stringify(json, null, 2))}
+                    download="dbdataDownload"
+                    target="_blank">
+                    <button>download</button>
+                </a>
+            </div>
+        </>
     )
 }
 
