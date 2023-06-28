@@ -27,7 +27,8 @@ export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
     }
 
     const handleRemove = (targetId: string) => {
-        dispatch(del(targetId + configElement.name + id))
+        targetId = targetId + configElement.name + id
+        dispatch(del(targetId))
 
         const newIdList: number[] = idList.filter((filterId: number) => filterId !== parseInt(targetId))
         setIdList(newIdList)

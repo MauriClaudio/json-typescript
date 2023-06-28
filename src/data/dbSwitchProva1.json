@@ -7,7 +7,7 @@
         {
             "name":"inputlist",
             "type": "list",
-            "datatype": "number",
+            "datatype": "string",
             "minChoose": 2,
             "required": true
         },
