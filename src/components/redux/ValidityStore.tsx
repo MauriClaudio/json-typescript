@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import ValiditySlice from './ValiditySlice';
+import ValueSlice from './ValueSlice';
 
 const validityStore = configureStore({
     reducer: {
-        validity: ValiditySlice
+        validity: ValiditySlice,
+        value: ValueSlice
     },
 })
 

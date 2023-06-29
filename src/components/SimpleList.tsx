@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "./redux/ValidityStore"
 import { add, del, getThunk, upd, validity } from "./redux/ValiditySlice"
 
-export const SimpleList = ({ configElement, setValue, id }: InputProps) => {
+export const SimpleList = ({ configElement, setValue, id, fileValue }: InputProps) => {
 
     const baseArray: number[] = []
     for (let i: number = 0; i < configElement.minChoose!; i++) { baseArray.push(i) }

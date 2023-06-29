@@ -5,20 +5,33 @@
     "minListElements": 1,
     "elements": [
         {
+            "name":"list",
+            "type":"list",
+            "minListElements":2,
+            "elements":[
+                {
+                    "name":"OBJ",
+                    "type":"object",
+                    "elements": [
+                        {
+                            "name": "Input string",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "name": "Input Boolean2",
+                            "type": "boolean",
+                            "required": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name":"inputlist",
             "type": "list",
             "datatype": "string",
             "minChoose": 2,
-            "required": true
-        },
-        {
-            "name": "Input Boolean1",
-            "type": "boolean",
-            "required": true
-        },
-        {
-            "name": "Input Boolean2",
-            "type": "boolean",
             "required": true
         }
     ]

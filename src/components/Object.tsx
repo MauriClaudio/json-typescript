@@ -5,8 +5,10 @@ import { ConfigElement, InputProps, JsonStructure } from "../types/ConfigAll"
 import { AppDispatch } from "./redux/ValidityStore"
 import { add, getThunk, upd, validity } from "./redux/ValiditySlice"
 import { SetPath } from "./SetPath"
+import { ErrorFile } from "./ErrorFile"
+import { addValue, getThunkValue, value } from "./redux/ValueSlice"
 
-export const Object = ({ configElement, setValue, id, listUtils }: InputProps) => {
+export const Object = ({ configElement, setValue, id, listUtils, fileValue }: InputProps) => {
 
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
 
@@ -16,8 +18,8 @@ export const Object = ({ configElement, setValue, id, listUtils }: InputProps) =
 
         if (js.elements || js.value || js.values) { newJsonElements.push(js) }
 
-        let newJs: JsonStructure = { name: configElement.name, elements: newJsonElements, id: listUtils ? listUtils : id }
-        if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: listUtils ? listUtils : id } }
+        let newJs: JsonStructure = { name: configElement.name, id: listUtils !== undefined ? listUtils : id, elements: newJsonElements }
+        if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: listUtils !== undefined ? listUtils : id } }
 
         setJsonElements(newJsonElements)
         setValue(newJs)
@@ -30,6 +32,10 @@ export const Object = ({ configElement, setValue, id, listUtils }: InputProps) =
 
     useEffect(() => {
         dispatch(add({ id: configElement.name + id, fatherId: id, validity: true }))
+        if (fileValue !== undefined) {
+            dispatch(addValue({ id: configElement.name + id, fatherId: id, value: { name: configElement.name, id: id } }))
+            updLocalValue()
+        }
     }, [])
 
     useEffect(() => {
@@ -45,6 +51,24 @@ export const Object = ({ configElement, setValue, id, listUtils }: InputProps) =
     }
 
 
+    const updLocalValue = async () => {
+        const prova: any = await dispatch(getThunkValue())
+        const data: value[] = prova.payload.value
+        const index: number = data.findIndex((item: value) => item.id === (configElement.name + id))
+        setJsonElements(data[index].value.elements!)
+    }
+
+    const errorList: JsonStructure[] = []
+    if (fileValue !== undefined) {
+        if (fileValue.elements) {
+            for (let i = 0; i <= fileValue.elements.length - 1; i++) {
+                if (!configElement.elements?.find((item: ConfigElement) => item.name === fileValue.elements![i].name)) {
+                    errorList.push(fileValue.elements[i])
+                }
+            }
+        }
+    }
+
     return (
         <div>
             {configElement.name + " : {"}
@@ -59,6 +83,16 @@ export const Object = ({ configElement, setValue, id, listUtils }: InputProps) =
                         configElement={item}
                         setValue={setThisValue}
                         id={configElement.name + id}
+                        fileValue={fileValue?.elements?.find((element: JsonStructure) => item.name === element.name)}
+                    />
+                </div>
+            )}
+            {errorList?.map((item: JsonStructure) =>
+                <div key={item.name} style={{ paddingLeft: "24px" }}>
+                    <ErrorFile
+                        setValue={setThisValue}
+                        id={configElement.name + id}
+                        fileValue={item}
                     />
                 </div>
             )}

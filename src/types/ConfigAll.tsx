@@ -3,11 +3,12 @@ export type InputProps = {
     setValue: (js: JsonStructure, validity?: boolean) => void
     id: string
     listUtils?: string
+    fileValue?: JsonStructure 
 }
 
 export type JsonStructure = {
     name: string
-    id?: string
+    id: string
     value?: string
     values?: string[]
     elements?: JsonStructure[]

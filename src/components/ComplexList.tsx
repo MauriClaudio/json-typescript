@@ -4,12 +4,34 @@ import { useDispatch } from "react-redux"
 import { ConfigElement, InputProps, JsonStructure } from "../types/ConfigAll"
 import { add, del, getThunk, upd, validity } from "./redux/ValiditySlice"
 import { AppDispatch } from "./redux/ValidityStore"
-import { Object } from "./Object"
+import { addValue, getThunkValue, value } from "./redux/ValueSlice"
+import { SetPath } from "./SetPath"
+import { ErrorFile } from "./ErrorFile"
 
-export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
+export const ComplexList = ({ configElement, setValue, id, fileValue }: InputProps,) => {
 
+    const errorList: JsonStructure[] = []
     const baseArray: number[] = []
-    for (let i: number = 0; i < configElement.minListElements!; i++) { baseArray.push(i) }
+    const lenght: number = (fileValue?.elements?.length!) > configElement.minListElements! ? fileValue?.elements?.length! : configElement.minListElements!
+    for (let i: number = 0; i < lenght!; i++) {
+        if (fileValue?.elements![i]) {
+            if (isNaN(parseInt(fileValue.elements![i].name))) {
+                errorList.push(fileValue.elements[i])
+                const lastId: number = baseArray.length ? baseArray[baseArray.length - 1] : 0
+                const newId: number = lastId + 1
+                baseArray.push(newId)
+            }
+            else {
+                baseArray.push(parseInt(fileValue.elements![i].name))
+            }
+        }
+        else {
+            const lastId: number = baseArray.length ? baseArray[baseArray.length - 1] : 0
+            const newId: number = lastId + 1
+            baseArray.push(newId)
+        }
+    }
+
 
     const [jsonElements, setJsonElements] = useState<JsonStructure[]>([])
 
@@ -35,7 +57,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
 
         const newJsonElements: JsonStructure[] = jsonElements.filter((element: JsonStructure) => element.id !== targetId)
 
-        let newJs: JsonStructure = { name: configElement.name, elements: newJsonElements, id: id }
+        let newJs: JsonStructure = { name: configElement.name, id: id, elements: newJsonElements }
         if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: id } }
 
         setJsonElements(newJsonElements)
@@ -52,7 +74,7 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
 
         if (js.elements || js.value || js.values) { newJsonElements.push(js) }
 
-        let newJs: JsonStructure = { name: configElement.name, elements: newJsonElements, id: id }
+        let newJs: JsonStructure = { name: configElement.name, id: id, elements: newJsonElements }
         if (newJsonElements.length === 0) { newJs = { name: configElement.name, id: id } }
 
         setJsonElements(newJsonElements)
@@ -66,6 +88,10 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
 
     useEffect(() => {
         dispatch(add({ id: configElement.name + id, fatherId: id, validity: validity }))
+        if (fileValue !== undefined) {
+            dispatch(addValue({ id: configElement.name + id, fatherId: id, value: { name: configElement.name, id: id } }))
+            updLocalValue()
+        }
     }, [])
 
     useEffect(() => {
@@ -93,6 +119,12 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
         }
     }
 
+    const updLocalValue = async () => {
+        const prova: any = await dispatch(getThunkValue())
+        const data: value[] = prova.payload.value
+        const index: number = data.findIndex((item: value) => item.id === (configElement.name + id))
+        setJsonElements(data[index].value.elements!)
+    }
 
     return (
         <>
@@ -105,13 +137,14 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
                 <div key={item}>
                     {configElement.elements?.map((element: ConfigElement) =>
                         <div key={element.name} style={{ paddingLeft: "10px" }} >
-                            <Object
+                            <SetPath
                                 setValue={setThisValue}
-                                configElement={{ name: item + '', type: '', elements: configElement.elements }}
+                                configElement={{ name: item + '', type: 'object', elements: configElement.elements }}
                                 id={configElement.name + id}
                                 listUtils={item + ''}
+                                fileValue={fileValue?.elements?.find((element: JsonStructure) => item + '' === element.name)}
                             />
-                            {configElement.minListElements && item < configElement.minListElements ?
+                            {configElement.minListElements && idList.length <= configElement.minListElements ?
                                 null
                                 :
                                 <button
@@ -121,6 +154,15 @@ export const ComplexList = ({ configElement, setValue, id }: InputProps,) => {
                             }
                         </div>
                     )}
+                </div>
+            )}
+            {errorList?.map((item: JsonStructure) =>
+                <div key={item.name} style={{ paddingLeft: "24px" }}>
+                    <ErrorFile
+                        setValue={setThisValue}
+                        id={configElement.name + id}
+                        fileValue={item}
+                    />
                 </div>
             )}
             <button onClick={handleAdd}>ADD</button>
